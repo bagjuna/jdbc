@@ -5,8 +5,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.scoula.jdbc.domain.Member;
-import org.scoula.jdbc.repository.MemberRepositoryV1;
+import org.scoula.jdbc.repository.MemberRepositoryV3;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
+import org.springframework.transaction.PlatformTransactionManager;
 
 import java.sql.SQLException;
 
@@ -15,20 +17,23 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.scoula.jdbc.connection.ConnectionConst.*;
 
 
-class MemberServiceV1Test {
+class MemberServiceV3_1Test {
 
     public static final String MEMBER_A = "memberA";
     public static final String MEMBER_B = "memberB";
     public static final String MEMBER_EX = "ex";
 
-    private MemberRepositoryV1 memberRepository;
-    private MemberServiceV1 memberService;
+    private MemberRepositoryV3 memberRepository;
+    private MemberServiceV3_1 memberService;
+
+
 
     @BeforeEach
-    void before() {
+    public void before() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource(URL, USERNAME, PASSWORD);
-        memberRepository = new MemberRepositoryV1(dataSource);
-        memberService = new MemberServiceV1(memberRepository);
+        memberRepository = new MemberRepositoryV3(dataSource);
+        PlatformTransactionManager transactionManager = new DataSourceTransactionManager(dataSource);
+        memberService = new MemberServiceV3_1(memberRepository, transactionManager);
     }
 
     @AfterEach
@@ -78,13 +83,10 @@ class MemberServiceV1Test {
         // then
         Member findMemberA = memberRepository.findById(memberA.getMemberId());
         Member findMemberEx = memberRepository.findById(memberEx.getMemberId());
-        assertThat(findMemberA.getMoney()).isEqualTo(8000);
+        assertThat(findMemberA.getMoney()).isEqualTo(10000);
         assertThat(findMemberEx.getMoney()).isEqualTo(10000);
 
     }
 
-
-
-
-
+    
 }
