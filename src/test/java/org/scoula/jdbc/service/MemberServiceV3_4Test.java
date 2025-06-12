@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.scoula.jdbc.connection.ConnectionConst.*;
 
 /**
- * 트랜잭션 자동화
+ * 트랜잭션 - DataSourceTransactionManager
  */
 @Slf4j
 @SpringBootTest

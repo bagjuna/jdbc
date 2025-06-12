@@ -7,5 +7,5 @@
 # set lock_wait_timeout  = 60000; # 60초 동안 락 대기
 # set autocommit = 0; # 수동 커밋 모드로 설정
 # update member set money = 1000 where member_id = 'memberA';
-commit ;
+# commit ; # 커밋
 select * from member;
